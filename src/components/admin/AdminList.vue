@@ -29,7 +29,7 @@
           </td>
         </tr>
         <tr v-if="admins.length === 0">
-          <td colspan="3" class="text-center text-muted">Tidak ada data admin</td>
+          <td colspan="5" class="text-center text-muted">Tidak ada data admin</td>
         </tr>
       </tbody>
     </table>
@@ -56,7 +56,7 @@ export default {
     async fetchAdmins() {
       try {
         const res = await axios.get('/admins')
-        this.admins = res.data
+        this.admins = res.data.data
       } catch (err) {
         console.error('Gagal mengambil data admin:', err)
       }
@@ -72,7 +72,7 @@ export default {
     async hapusAdmin(id) {
       if (confirm('Yakin ingin menghapus admin ini?')) {
         try {
-          await axios.delete(`/admins/${admin_id}`)
+          await axios.delete(`/admins/${id}`)
           this.fetchAdmins()
         } catch (err) {
           console.error('Gagal menghapus admin:', err)
@@ -91,18 +91,15 @@ export default {
 </script>
 
 <style scoped>
-.tabel-header-soft {
-  background-color: #dbeeff; /* biru soft */
-  color: #0d47a1; /* teks biru tua */
+.tabel-header-soft th {
+  background-color: #dbeeff ;
+  color: #0b0b0b;
 }
 
-.table th {
-  vertical-align: middle;
-  text-align: center;
-}
-
+.table th,
 .table td {
   vertical-align: middle;
+  text-align: center;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
