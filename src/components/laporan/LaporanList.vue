@@ -115,19 +115,26 @@ export default {
         sampai: ''
       },
       laporanList: [],
-      notif: '' // ✅ Tambahkan ini
+      notif: '' // Notifikasi tampil di atas
     }
   },
   methods: {
     async fetchLaporan() {
+      const { dari, sampai } = this.filter
+
+      // ✅ Cek apakah tanggal belum dipilih
+      if (!dari || !sampai) {
+        this.notif = 'Silakan pilih rentang tanggal terlebih dahulu sebelum menerapkan filter.'
+        setTimeout(() => {
+          this.notif = ''
+        }, 3000)
+        return
+      }
+
       try {
-        const { dari, sampai } = this.filter
-        const res = (dari && sampai)
-          ? await axios.get(`/laporans/filter?dari=${dari}&sampai=${sampai}`)
-          : await axios.get('/laporans')
+        const res = await axios.get(`/laporans/filter?dari=${dari}&sampai=${sampai}`)
         this.laporanList = res.data.data || []
 
-        // ✅ Tampilkan notifikasi
         this.notif = 'Filter laporan berhasil diterapkan!'
         setTimeout(() => {
           this.notif = ''

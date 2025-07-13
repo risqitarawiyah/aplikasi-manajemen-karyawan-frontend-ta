@@ -21,6 +21,11 @@
       </button>
     </div>
 
+    <!-- Notifikasi -->
+    <div v-if="notifPesan" class="alert alert-success" role="alert">
+      {{ notifPesan }}
+    </div>
+
     <table class="table table-bordered table-striped">
       <thead class="tabel-header-soft">
         <tr>
@@ -58,8 +63,8 @@
       v-if="tampilkanForm"
       :mode="formMode"
       :dataEdit="dataEdit"
-      @close="tampilkanForm = false"
-      @saved="ambilData"
+      @close="handleFormClose"
+      @saved="handleFormSaved"
     />
 
     <!-- Modal Konfirmasi -->
@@ -87,6 +92,7 @@ export default {
       search: '',
       tampilkanForm: false,
       formMode: 'tambah',
+      notifPesan: '',
       dataEdit: null
     }
   },
@@ -112,6 +118,12 @@ export default {
       this.dataEdit = null
       this.tampilkanForm = true
     },
+    tampilkanNotifikasi(pesan) {
+      this.notifPesan = pesan;
+      setTimeout(() => {
+        this.notifPesan = '';
+      }, 3000);
+    },
     editKaryawan(karyawan) {
       this.formMode = 'edit'
       this.dataEdit = karyawan
@@ -125,6 +137,7 @@ export default {
       try {
         await axios.delete(`/karyawans/${this.karyawanDihapus.karyawan_id}`)
         this.ambilData()
+        this.tampilkanNotifikasi('Karyawan berhasil dihapus!')
         } catch (err) {
           console.error('Gagal menghapus karyawan:', err)
         } finally {
@@ -135,8 +148,12 @@ export default {
       this.tampilkanForm = false
     },
     async handleFormSaved(dataBaru) {
-      this.tampilkanForm = false
-      this.ambilData()
+      const mode = this.formMode; // simpan dulu sebelum ditutup
+      this.tampilkanForm = false;
+      this.ambilData();
+      this.tampilkanNotifikasi(
+        mode === 'tambah' ? 'Karyawan berhasil ditambahkan!' : 'Karyawan berhasil diperbarui!'
+      );
     }
   },
   mounted() {

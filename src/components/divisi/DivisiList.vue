@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="divisi-list">
     <h3 class="fw-bold">
       Divisi <small class="text-muted">Aplikasi Manajemen Data Karyawan</small>
     </h3>
@@ -19,6 +19,11 @@
       <button class="btn btn-primary ms-2" @click="tambahDivisi">
         <i class="bi bi-plus-circle"></i> Tambah Divisi
       </button>
+    </div>
+
+    <!-- Notifikasi -->
+    <div v-if="notifPesan" class="alert alert-success" role="alert">
+      {{ notifPesan }}
     </div>
 
     <table class="table table-bordered table-striped">
@@ -54,7 +59,7 @@
       :mode="formMode"
       :dataEdit="dataEdit"
       @close="tutupForm"
-      @saved="fetchDivisi"
+      @saved="handleFormSaved"
     />
 
     <!-- Modal Konfirmasi -->
@@ -80,6 +85,7 @@ export default {
       loading: false,
       tampilkanForm: false,
       formMode: 'tambah',
+      notifPesan: '',
       dataEdit: null,
       search: '',
       showConfirm: false,
@@ -119,6 +125,12 @@ export default {
     tutupForm() {
       this.tampilkanForm = false
     },
+    tampilkanNotifikasi(pesan) {
+      this.notifPesan = pesan
+      setTimeout(() => {
+        this.notifPesan = ''
+      }, 3000)
+    },
     konfirmasiHapus(divisi) {
       this.divisiDihapus = divisi
       this.showConfirm = true
@@ -127,11 +139,20 @@ export default {
       try {
         await axios.delete(`/divisis/${this.divisiDihapus.divisi_id}`)
         await this.fetchDivisi()
+        this.tampilkanNotifikasi('Divisi berhasil dihapus!')
       } catch (err) {
         console.error('Gagal menghapus divisi:', err)
       } finally {
         this.showConfirm = false
       }
+    },
+    async handleFormSaved() {
+      const mode = this.formMode
+      this.tampilkanForm = false
+      await this.fetchDivisi()
+      this.tampilkanNotifikasi(
+        mode === 'tambah' ? 'Divisi berhasil ditambahkan!' : 'Divisi berhasil diperbarui!'
+      )
     }
   },
   mounted() {
