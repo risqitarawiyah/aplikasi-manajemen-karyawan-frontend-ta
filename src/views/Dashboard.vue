@@ -33,7 +33,31 @@
         <div class="card-icon">📄</div>
         <div class="card-data">
           <h2>{{ count.laporan }}</h2>
-          <p>Laporan</p>
+          <p>Log Aktivitas</p>
+        </div>
+      </div>
+
+      <div class="card yellow" @click="$router.push('/wali-kelas')">
+        <div class="card-icon">🧑‍🏫</div>
+        <div class="card-data">
+          <h2>{{ count.walikelas }}</h2>
+          <p>Wali Kelas</p>
+        </div>
+      </div>
+
+      <div class="card teal" @click="$router.push('/absensi')">
+        <div class="card-icon">✅</div>
+        <div class="card-data">
+          <h2>{{ count.absensi }}</h2>
+          <p>Absensi</p>
+        </div>
+      </div>
+
+      <div class="card orange" @click="$router.push('/laporan-absensi')">
+        <div class="card-icon">📊</div>
+        <div class="card-data">
+          <h2>{{ count.laporanAbsensi }}</h2>
+          <p>Laporan Absensi</p>
         </div>
       </div>
     </div>
@@ -57,29 +81,46 @@ const count = ref({
   admin: 0,
   karyawan: 0,
   divisi: 0,
-  laporan: 0
+  laporan: 0,
+  walikelas: 0,
+  absensi: 0,
+  laporanAbsensi: 0
 })
 
 const fetchCounts = async () => {
   try {
-    const [admin, karyawan, divisi, laporan] = await Promise.all([
-      axios.get('/admins/count'),         //sesuaikan dengan app.js
+    const [
+      admin,
+      karyawan,
+      divisi,
+      laporan,
+      walikelas,
+      absensi,
+      laporanAbsensi
+    ] = await Promise.all([
+      axios.get('/admins/count'),
       axios.get('/karyawans/count'),
       axios.get('/divisis/count'),
-      axios.get('/laporans/count')
+      axios.get('/laporans/count'),
+      axios.get('/walikelas/count'),
+      axios.get('/absensis/count'),
+      axios.get('/laporan-absensi/count') // Sesuaikan sesuai backend
     ])
-    count.value.admin = admin.data?.count || 0
-    count.value.karyawan = karyawan.data?.count || 0
-    count.value.divisi = divisi.data?.count || 0
-    count.value.laporan = laporan.data?.count || 0
+    count.value = {
+      admin: admin.data?.count || 0,
+      karyawan: karyawan.data?.count || 0,
+      divisi: divisi.data?.count || 0,
+      laporan: laporan.data?.count || 0,
+      walikelas: walikelas.data?.count || 0,
+      absensi: absensi.data?.count || 0,
+      laporanAbsensi: laporanAbsensi.data?.count || 0
+    }
   } catch (err) {
     console.error('Gagal memuat data dashboard:', err)
   }
 }
 
-onMounted(() => {
-  fetchCounts()
-})
+onMounted(fetchCounts)
 
 const today = new Date().toISOString().split('T')[0]
 const calendarAttributes = ref([
@@ -96,7 +137,6 @@ const calendarAttributes = ref([
   }
 ])
 </script>
-
 
 <style scoped>
 .dashboard {
@@ -142,21 +182,13 @@ const calendarAttributes = ref([
   color: #888;
 }
 
-.card.red {
-  background-color: #ffe5e5;
-}
-
-.card.blue {
-  background-color: #e5e9ff;
-}
-
-.card.green {
-  background-color: #e5ffec;
-}
-
-.card.purple {
-  background-color: #f1e5ff;
-}
+.card.red { background-color: #ffe5e5; }
+.card.blue { background-color: #e5e9ff; }
+.card.green { background-color: #e5ffec; }
+.card.purple { background-color: #f1e5ff; }
+.card.yellow { background-color: #fff9db; }
+.card.teal { background-color: #d5fdf2; }
+.card.orange { background-color: #ffe9d6; }
 
 .calendar-card {
   background-color: #f1fbff;

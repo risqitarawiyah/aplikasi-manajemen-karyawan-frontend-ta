@@ -5,7 +5,7 @@
     </h3>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <!-- Search bar di kiri -->
+      <!-- Search bar -->
       <div style="max-width: 300px; width: 100%;">
         <input
           type="text"
@@ -15,7 +15,7 @@
         />
       </div>
 
-      <!-- Tombol tambah di kanan -->
+      <!-- Tombol tambah -->
       <button class="btn btn-primary ms-2" @click="tambahDivisi">
         <i class="bi bi-plus-circle"></i> Tambah Divisi
       </button>
@@ -30,30 +30,28 @@
       <thead class="tabel-header-soft">
         <tr>
           <th>ID</th>
-          <th>Divisi</th>
-          <th>Posisi</th>
-          <th>ID Karyawan</th>
+          <th>Nama Divisi</th>
+          <th>Jumlah Karyawan</th>
           <th>Aksi</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="divisi in filteredDivisi" :key="divisi.divisi_id">
-          <td>{{ divisi.divisi_id }}</td>
-          <td>{{ divisi.nama_divisi }}</td>
-          <td>{{ divisi.posisi }}</td>
-          <td>{{ divisi.karyawan_id }}</td>
+        <tr v-for="divisi in filteredDivisi" :key="divisi.id">
+          <td>{{ divisi.id }}</td>
+          <td>{{ divisi.nama }}</td>
+          <td>{{ divisi.karyawan?.length || 0 }}</td>
           <td>
             <button class="btn btn-sm btn-warning me-2" @click="editDivisi(divisi)">Edit</button>
             <button class="btn btn-sm btn-danger" @click="konfirmasiHapus(divisi)">Hapus</button>
           </td>
         </tr>
         <tr v-if="!loading && divisiList.length === 0">
-          <td colspan="5" class="text-center text-muted">Belum ada data divisi</td>
+          <td colspan="4" class="text-center text-muted">Belum ada data divisi</td>
         </tr>
       </tbody>
     </table>
 
-    <!-- Form Tambah/Edit -->
+    <!-- Form -->
     <DivisiForm
       v-if="tampilkanForm"
       :mode="formMode"
@@ -96,7 +94,7 @@ export default {
     filteredDivisi() {
       const keyword = this.search.toLowerCase()
       return this.divisiList.filter(div =>
-        div.nama_divisi.toLowerCase().includes(keyword)
+        div.nama?.toLowerCase().includes(keyword)
       )
     }
   },
@@ -137,7 +135,7 @@ export default {
     },
     async hapusDivisi() {
       try {
-        await axios.delete(`/divisis/${this.divisiDihapus.divisi_id}`)
+        await axios.delete(`/divisis/${this.divisiDihapus.id}`)
         await this.fetchDivisi()
         this.tampilkanNotifikasi('Divisi berhasil dihapus!')
       } catch (err) {
@@ -166,13 +164,11 @@ export default {
   background-color: #dbeeff;
   color: #0b0b0b;
 }
-
 .table th,
 .table td {
   vertical-align: middle;
   text-align: center;
 }
-
 .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }

@@ -14,7 +14,7 @@
         <div class="modal-body">
           <div class="mb-3">
             <label>Nama</label>
-            <input type="text" v-model="form.nama_karyawan" class="form-control" required />
+            <input type="text" v-model="form.nama" class="form-control" required />
           </div>
 
           <div v-if="mode === 'tambah'" class="mb-3">
@@ -42,11 +42,31 @@
           </div>
 
           <div class="mb-3">
-            <label>Status</label>
+            <label>Status Kepegawaian</label>
             <select v-model="form.status_kepegawaian" class="form-control" required>
               <option disabled value="">Pilih</option>
               <option value="PNS">PNS</option>
               <option value="NON_PNS">NON_PNS</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label>Divisi</label>
+            <select v-model="form.divisiId" class="form-control" required>
+              <option disabled value="">Pilih Divisi</option>
+              <option v-for="div in divisiList" :key="div.id" :value="div.id">
+                {{ div.nama }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label>Jabatan</label>
+            <select v-model="form.jabatanId" class="form-control" required>
+              <option disabled value="">Pilih Jabatan</option>
+              <option v-for="jab in jabatanList" :key="jab.id" :value="jab.id">
+                {{ jab.nama }}
+              </option>
             </select>
           </div>
         </div>
@@ -74,54 +94,57 @@ export default {
   data() {
     return {
       form: {
-        nama_karyawan: '',
+        nama: '',
         jenis_kelamin: '',
         email: '',
         no_hp: '',
         alamat: '',
-        status_kepegawaian: ''
-      }
+        status_kepegawaian: '',
+        divisiId: '',
+        jabatanId: ''
+      },
+      divisiList: [],
+      jabatanList: []
     }
   },
   methods: {
+    async fetchDropdowns() {
+      try {
+        const [divisiRes, jabatanRes] = await Promise.all([
+          axios.get('/divisis'),
+          axios.get('/jabatans')
+        ])
+        this.divisiList = divisiRes.data
+        this.jabatanList = jabatanRes.data
+      } catch (err) {
+        console.error('Gagal memuat divisi/jabatan:', err)
+      }
+    },
     async tambahKaryawan() {
-      if (
-        !this.form.nama_karyawan ||
-        !this.form.jenis_kelamin ||
-        !this.form.email ||
-        !this.form.no_hp ||
-        !this.form.alamat ||
-        !this.form.status_kepegawaian
-      ) {
+      const f = this.form
+      if (!f.nama || !f.jenis_kelamin || !f.email || !f.no_hp || !f.alamat || !f.status_kepegawaian || !f.divisiId || !f.jabatanId) {
         alert('Semua field wajib diisi!')
         return
       }
 
       try {
-        console.log('Form yang dikirim:', JSON.parse(JSON.stringify(this.form)))
         await axios.post('/karyawans', this.form)
         this.$emit('saved')
         this.$emit('close')
       } catch (err) {
         console.error('Gagal tambah karyawan:', err)
-        alert('Gagal menambah karyawan. Cek kembali data yang diisi.')
+        alert('Gagal menambah karyawan.')
       }
     },
-
     async updateKaryawan() {
-      if (
-        !this.form.nama_karyawan ||
-        !this.form.email ||
-        !this.form.no_hp ||
-        !this.form.alamat ||
-        !this.form.status_kepegawaian
-      ) {
+      const f = this.form
+      if (!f.nama || !f.email || !f.no_hp || !f.alamat || !f.status_kepegawaian || !f.divisiId || !f.jabatanId) {
         alert('Semua field wajib diisi!')
         return
       }
 
       try {
-        await axios.put(`/karyawans/${this.dataEdit.karyawan_id}`, this.form)
+        await axios.put(`/karyawans/${this.dataEdit.id}`, this.form)
         this.$emit('saved')
         this.$emit('close')
       } catch (err) {
@@ -131,9 +154,24 @@ export default {
     }
   },
   mounted() {
+    this.fetchDropdowns()
+
     if (this.mode === 'edit' && this.dataEdit) {
-      const { nama_karyawan, email, no_hp, alamat, status_kepegawaian } = this.dataEdit
-      this.form = { nama_karyawan, email, no_hp, alamat, status_kepegawaian }
+      const {
+        nama, email, no_hp, alamat, status_kepegawaian,
+        divisiId, jabatanId
+      } = this.dataEdit
+
+      this.form = {
+        nama,
+        jenis_kelamin: '', // hidden saat edit
+        email,
+        no_hp,
+        alamat,
+        status_kepegawaian,
+        divisiId,
+        jabatanId
+      }
     }
   }
 }
@@ -153,8 +191,25 @@ export default {
 .modal-box {
   background: white;
   width: 500px;
+  max-height: 90vh;
   border-radius: 8px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-box form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.modal-body {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0; /* penting untuk scroll */
 }
 
 .modal-header {
@@ -162,11 +217,7 @@ export default {
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-}
-
-.modal-body {
-  padding: 16px;
+  gap: 10px;
 }
 
 .modal-footer {
@@ -174,6 +225,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  background-color: #f8f9fa; /* opsional, biar kelihatan */
 }
 
 .close-btn {

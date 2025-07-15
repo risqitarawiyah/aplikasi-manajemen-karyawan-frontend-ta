@@ -30,16 +30,19 @@
 <script>
 export default {
   data() {
-    return {
-      menuItems: [
-        { label: 'Dashboard', path: '/dashboard', icon: 'bi bi-speedometer2' },
-        { label: 'Admin', path: '/admin', icon: 'bi bi-person-badge' },
-        { label: 'Karyawan', path: '/karyawan', icon: 'bi bi-people' },
-        { label: 'Divisi', path: '/divisi', icon: 'bi bi-diagram-3' },
-        { label: 'Laporan', path: '/laporan', icon: 'bi bi-file-earmark-text' }
-      ]
-    }
-  },
+  return {
+    menuItems: [
+      { label: 'Dashboard', path: '/dashboard', icon: 'bi bi-speedometer2' },
+      { label: 'Admin', path: '/admin', icon: 'bi bi-person-badge' },
+      { label: 'Karyawan', path: '/karyawan', icon: 'bi bi-people' },
+      { label: 'Divisi', path: '/divisi', icon: 'bi bi-diagram-3' },
+      { label: 'Jabatan', path: '/jabatan', icon: 'bi bi-briefcase' },
+      { label: 'Wali Kelas', path: '/wali-kelas', icon: 'bi bi-person-lines-fill' },
+      { label: 'Absensi', path: '/absensi', icon: 'bi bi-calendar-check' },
+      { label: 'Laporan Absensi', path: '/laporan-absensi', icon: 'bi bi-journal-text' }
+    ]
+  }
+},
   methods: {
     logout() {
       localStorage.removeItem('token')

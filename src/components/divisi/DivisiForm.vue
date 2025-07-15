@@ -14,30 +14,7 @@
         <div class="modal-body">
           <div class="mb-3">
             <label>Nama Divisi</label>
-            <select v-model="form.nama_divisi" class="form-control" required>
-              <option disabled value="">Pilih</option>
-              <option value="Manajemen Sekolah">Manajemen Sekolah</option>
-              <option value="Kesiswaan">Kesiswaan</option>
-              <option value="Administrasi">Administrasi</option>
-              <option value="Kependidikan">Kependidikan</option>
-              <option value="Guru">Guru</option>
-              <option value="Keamanan">Keamanan</option>
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label>Posisi</label>
-            <input type="text" v-model="form.posisi" class="form-control" required />
-          </div>
-
-          <div class="mb-3">
-            <label>Karyawan</label>
-            <select v-model="form.karyawan_id" class="form-control" required>
-              <option disabled value="">Pilih</option>
-              <option v-for="k in daftarKaryawan" :key="k.karyawan_id" :value="k.karyawan_id">
-                {{ k.nama_karyawan }}
-              </option>
-            </select>
+            <input type="text" v-model="form.nama" class="form-control" required placeholder="Contoh: OSIS, Guru, Keamanan" />
           </div>
         </div>
 
@@ -64,17 +41,14 @@ export default {
   data() {
     return {
       form: {
-        nama_divisi: '',
-        posisi: '',
-        karyawan_id: ''
-      },
-      daftarKaryawan: []
+        nama: ''
+      }
     }
   },
   methods: {
     async tambahDivisi() {
-      if (!this.form.nama_divisi || !this.form.posisi || !this.form.karyawan_id) {
-        alert('Semua field wajib diisi!')
+      if (!this.form.nama) {
+        alert('Nama divisi wajib diisi!')
         return
       }
 
@@ -84,41 +58,29 @@ export default {
         this.$emit('close')
       } catch (err) {
         console.error('Gagal tambah divisi:', err)
-        alert('Gagal menambah divisi. Cek kembali data yang diisi.')
+        alert('Gagal menambah divisi.')
       }
     },
 
     async updateDivisi() {
-      if (!this.form.nama_divisi || !this.form.posisi || !this.form.karyawan_id) {
-        alert('Semua field wajib diisi!')
+      if (!this.form.nama) {
+        alert('Nama divisi wajib diisi!')
         return
       }
 
       try {
-        await axios.put(`/divisis/${this.dataEdit.divisi_id}`, this.form)
+        await axios.put(`/divisis/${this.dataEdit.id}`, this.form)
         this.$emit('saved')
         this.$emit('close')
       } catch (err) {
         console.error('Gagal update divisi:', err)
-        alert('Gagal memperbarui data divisi.')
-      }
-    },
-
-    async ambilKaryawan() {
-      try {
-        const res = await axios.get('/karyawans')
-        this.daftarKaryawan = res.data
-      } catch (err) {
-        console.error('Gagal mengambil daftar karyawan:', err)
+        alert('Gagal memperbarui divisi.')
       }
     }
   },
   mounted() {
-    this.ambilKaryawan()
-
     if (this.mode === 'edit' && this.dataEdit) {
-      const { nama_divisi, posisi, karyawan_id } = this.dataEdit
-      this.form = { nama_divisi, posisi, karyawan_id }
+      this.form.nama = this.dataEdit.nama
     }
   }
 }
@@ -167,9 +129,5 @@ export default {
   font-size: 1.5rem;
   color: #000;
   cursor: pointer;
-}
-
-select.form-control {
-  appearance: auto;
 }
 </style>

@@ -5,7 +5,6 @@
     </h3>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <!-- Search bar di kiri -->
       <div style="max-width: 300px; width: 100%;">
         <input
           type="text"
@@ -15,13 +14,11 @@
         >
       </div>
 
-      <!-- Tombol tambah di kanan -->
       <button class="btn btn-primary ms-2" @click="tambahKaryawan">
         <i class="bi bi-plus-circle"></i> Tambah Karyawan
       </button>
     </div>
 
-    <!-- Notifikasi -->
     <div v-if="notifPesan" class="alert alert-success" role="alert">
       {{ notifPesan }}
     </div>
@@ -33,32 +30,37 @@
           <th>Nama</th>
           <th>Jenis Kelamin</th>
           <th>Email</th>
-          <th>No Hp</th>
+          <th>No HP</th>
           <th>Alamat</th>
           <th>Status</th>
+          <th>Divisi</th>
+          <th>Jabatan</th>
           <th>Aksi</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="karyawan in filteredKaryawan" :key="karyawan.karyawan_id">
-          <td>{{ karyawan.karyawan_id }}</td>
-          <td>{{ karyawan.nama_karyawan }}</td>
+        <tr v-for="karyawan in filteredKaryawan" :key="karyawan.id">
+          <td>{{ karyawan.id }}</td>
+          <td>{{ karyawan.nama }}</td>
           <td>{{ karyawan.jenis_kelamin }}</td>
           <td>{{ karyawan.email }}</td>
           <td>{{ karyawan.no_hp }}</td>
           <td>{{ karyawan.alamat }}</td>
           <td>{{ karyawan.status_kepegawaian }}</td>
+          <td>{{ karyawan.divisi?.nama || '-' }}</td>
+          <td>{{ karyawan.jabatan?.nama || '-' }}</td>
           <td>
             <button class="btn btn-sm btn-warning me-2" @click="editKaryawan(karyawan)">Edit</button>
             <button class="btn btn-sm btn-danger" @click="konfirmasiHapus(karyawan)">Hapus</button>
           </td>
         </tr>
         <tr v-if="karyawanList.length === 0">
-          <td colspan="8" class="text-center text-muted">Tidak ada data karyawan</td>
+          <td colspan="10" class="text-center text-muted">Tidak ada data karyawan</td>
         </tr>
       </tbody>
     </table>
 
+    <!-- Form dan Konfirmasi -->
     <KaryawanForm
       v-if="tampilkanForm"
       :mode="formMode"
@@ -67,10 +69,9 @@
       @saved="handleFormSaved"
     />
 
-    <!-- Modal Konfirmasi -->
     <ConfirmModal
       v-if="showConfirm"
-      :message="`Yakin ingin menghapus karyawan ini?\nSemua divisi milik karyawan ini juga akan ikut terhapus.`"
+      :message="`Yakin ingin menghapus karyawan ini?`"
       @confirm="hapusKaryawan"
       @cancel="showConfirm = false"
     />
@@ -80,7 +81,7 @@
 <script>
 import axios from '@/utils/axios'
 import ConfirmModal from '@/components/ConfirmModal.vue'
-import KaryawanForm from './KaryawanForm.vue' 
+import KaryawanForm from './KaryawanForm.vue'
 
 export default {
   components: { ConfirmModal, KaryawanForm },
@@ -100,14 +101,14 @@ export default {
     filteredKaryawan() {
       const keyword = this.search.toLowerCase()
       return this.karyawanList.filter(k =>
-        k.nama_karyawan.toLowerCase().includes(keyword)
+        k.nama?.toLowerCase().includes(keyword)
       )
     }
   },
   methods: {
     async ambilData() {
       try {
-        const res = await axios.get('/karyawans')
+        const res = await axios.get('/karyawans') // pastikan sudah include divisi dan jabatan di backend
         this.karyawanList = res.data
       } catch (err) {
         console.error('Gagal mengambil data karyawan:', err)
@@ -119,10 +120,10 @@ export default {
       this.tampilkanForm = true
     },
     tampilkanNotifikasi(pesan) {
-      this.notifPesan = pesan;
+      this.notifPesan = pesan
       setTimeout(() => {
-        this.notifPesan = '';
-      }, 3000);
+        this.notifPesan = ''
+      }, 3000)
     },
     editKaryawan(karyawan) {
       this.formMode = 'edit'
@@ -135,25 +136,25 @@ export default {
     },
     async hapusKaryawan() {
       try {
-        await axios.delete(`/karyawans/${this.karyawanDihapus.karyawan_id}`)
+        await axios.delete(`/karyawans/${this.karyawanDihapus.id}`)
         this.ambilData()
         this.tampilkanNotifikasi('Karyawan berhasil dihapus!')
-        } catch (err) {
-          console.error('Gagal menghapus karyawan:', err)
-        } finally {
-          this.showConfirm = false
-        }
+      } catch (err) {
+        console.error('Gagal menghapus karyawan:', err)
+      } finally {
+        this.showConfirm = false
+      }
     },
     handleFormClose() {
       this.tampilkanForm = false
     },
-    async handleFormSaved(dataBaru) {
-      const mode = this.formMode; // simpan dulu sebelum ditutup
-      this.tampilkanForm = false;
-      this.ambilData();
+    async handleFormSaved() {
+      const mode = this.formMode
+      this.tampilkanForm = false
+      this.ambilData()
       this.tampilkanNotifikasi(
         mode === 'tambah' ? 'Karyawan berhasil ditambahkan!' : 'Karyawan berhasil diperbarui!'
-      );
+      )
     }
   },
   mounted() {
@@ -168,7 +169,6 @@ export default {
   color: #0b0b0b;
 }
 
-/* Gabungkan th dan td agar semua teks tabel rata tengah */
 .table th,
 .table td {
   vertical-align: middle;
