@@ -23,42 +23,44 @@
       {{ notifPesan }}
     </div>
 
-    <table class="table table-bordered table-striped">
-      <thead class="tabel-header-soft">
-        <tr>
-          <th>ID</th>
-          <th>Nama</th>
-          <th>Jenis Kelamin</th>
-          <th>Email</th>
-          <th>No HP</th>
-          <th>Alamat</th>
-          <th>Status</th>
-          <th>Divisi</th>
-          <th>Jabatan</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="karyawan in filteredKaryawan" :key="karyawan.id">
-          <td>{{ karyawan.id }}</td>
-          <td>{{ karyawan.nama }}</td>
-          <td>{{ karyawan.jenis_kelamin }}</td>
-          <td>{{ karyawan.email }}</td>
-          <td>{{ karyawan.no_hp }}</td>
-          <td>{{ karyawan.alamat }}</td>
-          <td>{{ karyawan.status_kepegawaian }}</td>
-          <td>{{ karyawan.divisi?.nama || '-' }}</td>
-          <td>{{ karyawan.jabatan?.nama || '-' }}</td>
-          <td>
-            <button class="btn btn-sm btn-warning me-2" @click="editKaryawan(karyawan)">Edit</button>
-            <button class="btn btn-sm btn-danger" @click="konfirmasiHapus(karyawan)">Hapus</button>
-          </td>
-        </tr>
-        <tr v-if="karyawanList.length === 0">
-          <td colspan="10" class="text-center text-muted">Tidak ada data karyawan</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table class="table table-bordered table-striped">
+        <thead class="tabel-header-soft">
+          <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Jenis Kelamin</th>
+            <th>Email</th>
+            <th>No HP</th>
+            <th>Alamat</th>
+            <th>Status</th>
+            <th>Divisi</th>
+            <th>Jabatan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="karyawan in filteredKaryawan" :key="karyawan.id">
+            <td>{{ karyawan.id }}</td>
+            <td>{{ karyawan.nama }}</td>
+            <td>{{ karyawan.jenis_kelamin }}</td>
+            <td>{{ karyawan.email }}</td>
+            <td>{{ karyawan.no_hp }}</td>
+            <td>{{ karyawan.alamat }}</td>
+            <td>{{ karyawan.status_kepegawaian }}</td>
+            <td>{{ karyawan.divisi?.nama || '-' }}</td>
+            <td>{{ karyawan.jabatan?.nama || '-' }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning me-2" @click="editKaryawan(karyawan)">Edit</button>
+              <button class="btn btn-sm btn-danger" @click="konfirmasiHapus(karyawan)">Hapus</button>
+            </td>
+          </tr>
+          <tr v-if="karyawanList.length === 0">
+            <td colspan="10" class="text-center text-muted">Tidak ada data karyawan</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- Form dan Konfirmasi -->
     <KaryawanForm
@@ -164,6 +166,11 @@ export default {
 </script>
 
 <style scoped>
+.table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 .tabel-header-soft th {
   background-color: #dbeeff;
   color: #0b0b0b;
@@ -173,6 +180,10 @@ export default {
 .table td {
   vertical-align: middle;
   text-align: center;
+}
+.table td:last-child {
+  white-space: nowrap;
+  width: 120px;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {

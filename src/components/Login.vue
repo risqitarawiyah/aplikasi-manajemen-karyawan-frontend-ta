@@ -1,7 +1,6 @@
 <template>
   <div class="login-card">
-    <div class="card">
-      <div class="card-header text-white bg-primary fw-bold text-center">
+      <div class="card-header text-black fw-bold text-center">
         Login
       </div>
       <div class="card-body">
@@ -37,7 +36,6 @@
         Belum punya akun?
         <router-link to="/register" class="text-decoration-none">Register disini</router-link>
       </div>
-    </div>
 
     <!-- Notifikasi -->
     <transition name="fade">
@@ -82,9 +80,9 @@ export default {
           password: this.form.password
         })
 
-        const { token, peran } = res.data.data
+        const { token, username } = res.data.data
         const auth = useAuthStore()
-        auth.login(token, peran)
+        auth.login(token, username)
 
         this.showNotif('Login berhasil!', 'success')
         setTimeout(() => this.$router.push('/dashboard'), 1000)
@@ -102,11 +100,6 @@ export default {
   margin: 0 auto;
   background-color: transparent;
   position: relative;
-}
-
-.card {
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {

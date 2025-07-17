@@ -5,14 +5,6 @@
     </h3>
 
     <div class="card-container">
-      <div class="card green" @click="$router.push('/admin')">
-        <div class="card-icon">👤</div>
-        <div class="card-data">
-          <h2>{{ count.admin }}</h2>
-          <p>Admin</p>
-        </div>
-      </div>
-
       <div class="card red" @click="$router.push('/karyawan')">
         <div class="card-icon">👥</div>
         <div class="card-data">
@@ -78,7 +70,7 @@ import { ref, onMounted } from 'vue'
 import axios from '@/utils/axios'
 
 const count = ref({
-  admin: 0,
+
   karyawan: 0,
   divisi: 0,
   laporan: 0,
@@ -98,7 +90,6 @@ const fetchCounts = async () => {
       absensi,
       laporanAbsensi
     ] = await Promise.all([
-      axios.get('/admins/count'),
       axios.get('/karyawans/count'),
       axios.get('/divisis/count'),
       axios.get('/laporans/count'),
@@ -107,7 +98,6 @@ const fetchCounts = async () => {
       axios.get('/laporan-absensi/count') // Sesuaikan sesuai backend
     ])
     count.value = {
-      admin: admin.data?.count || 0,
       karyawan: karyawan.data?.count || 0,
       divisi: divisi.data?.count || 0,
       laporan: laporan.data?.count || 0,

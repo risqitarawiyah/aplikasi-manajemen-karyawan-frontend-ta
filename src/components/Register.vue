@@ -1,7 +1,6 @@
 <template>
   <div class="register-card">
-    <div class="card">
-      <div class="card-header text-white bg-primary fw-bold text-center">
+      <div class="card-header text-black fw-bold text-center">
         Register
       </div>
       <div class="card-body">
@@ -59,7 +58,6 @@
         Sudah punya akun?
         <router-link to="/login" class="text-decoration-none">Login disini</router-link>
       </div>
-    </div>
 
     <!-- Notifikasi -->
     <transition name="fade">
@@ -128,11 +126,6 @@ export default {
   margin: 0 auto;
   background-color: transparent;
   position: relative;
-}
-
-.card {
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {

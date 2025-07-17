@@ -4,7 +4,10 @@ import HomeView from '../views/HomeView.vue' // ⬅️ Tambahkan ini
 import Dashboard from '../views/Dashboard.vue'
 import Karyawan from '../views/Karyawan.vue'
 import Divisi from '../views/Divisi.vue'
-import Laporan from '../views/Laporan.vue'
+import Jabatan from '../views/Jabatan.vue'
+import WaliKelas from '../views/WaliKelas.vue'
+import Absensi from '../views/Absensi.vue'
+import LaporanAbsensi from '../views/LaporanAbsensi.vue'
 
 function isTokenExpired(token) {
   try {
@@ -22,7 +25,10 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
   { path: '/karyawan', name: 'Karyawan', component: Karyawan, meta: { requiresAuth: true } },
   { path: '/divisi', name: 'Divisi', component: Divisi, meta: { requiresAuth: true } },
-  { path: '/laporan', name: 'Laporan', component: Laporan, meta: { requiresAuth: true } },
+  { path: '/jabatan', name: 'Jabatan', component: Jabatan, meta: { requiresAuth: true } },
+  { path: '/walikelas', name: 'WaliKelas', component: WaliKelas, meta: { requiresAuth: true } },
+  { path: '/absensi', name: 'Absensi', component: Absensi, meta: { requiresAuth: true } },
+  { path: '/laporanabsensi', name: 'LaporanAbsensi', component: LaporanAbsensi, meta: { requiresAuth: true } }
 ]
 
 const router = createRouter({

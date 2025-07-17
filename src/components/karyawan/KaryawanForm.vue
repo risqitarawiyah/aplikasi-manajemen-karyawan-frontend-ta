@@ -17,7 +17,7 @@
             <input type="text" v-model="form.nama" class="form-control" required />
           </div>
 
-          <div v-if="mode === 'tambah'" class="mb-3">
+          <div class="mb-3">
             <label>Jenis Kelamin</label>
             <select v-model="form.jenis_kelamin" class="form-control" required>
               <option disabled value="">Pilih</option>
