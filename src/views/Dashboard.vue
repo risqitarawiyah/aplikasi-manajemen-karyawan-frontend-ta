@@ -4,6 +4,7 @@
       Dashboard <small class="text-muted">Aplikasi Manajemen Data Karyawan</small>
     </h3>
 
+    <!-- Semua Kartu Data Termasuk Laporan Absensi -->
     <div class="card-container">
       <div class="card red" @click="$router.push('/karyawan')">
         <div class="card-icon">👥</div>
@@ -21,15 +22,15 @@
         </div>
       </div>
 
-      <div class="card purple" @click="$router.push('/laporan')">
-        <div class="card-icon">📄</div>
+      <div class="card purple" @click="$router.push('/jabatan')">
+        <div class="card-icon">🧰</div> <!-- Ganti ikon jabatan -->
         <div class="card-data">
-          <h2>{{ count.laporan }}</h2>
-          <p>Log Aktivitas</p>
+          <h2>{{ count.jabatan }}</h2>
+          <p>Jabatan</p>
         </div>
       </div>
 
-      <div class="card yellow" @click="$router.push('/wali-kelas')">
+      <div class="card yellow" @click="$router.push('/walikelas')">
         <div class="card-icon">🧑‍🏫</div>
         <div class="card-data">
           <h2>{{ count.walikelas }}</h2>
@@ -45,7 +46,7 @@
         </div>
       </div>
 
-      <div class="card orange" @click="$router.push('/laporan-absensi')">
+      <div class="card orange" @click="$router.push('/laporanabsensi')">
         <div class="card-icon">📊</div>
         <div class="card-data">
           <h2>{{ count.laporanAbsensi }}</h2>
@@ -54,12 +55,13 @@
       </div>
     </div>
 
+    <!-- Kalender -->
     <div class="calendar-card mt-4">
       <h5 class="mb-3"><i class="bi bi-calendar-event me-2"></i> Kalender</h5>
       <v-calendar 
         :attributes="calendarAttributes"
         is-expanded
-        color="blue" 
+        color="blue"
       />
     </div>
   </div>
@@ -70,10 +72,9 @@ import { ref, onMounted } from 'vue'
 import axios from '@/utils/axios'
 
 const count = ref({
-
   karyawan: 0,
   divisi: 0,
-  laporan: 0,
+  jabatan: 0,
   walikelas: 0,
   absensi: 0,
   laporanAbsensi: 0
@@ -82,25 +83,25 @@ const count = ref({
 const fetchCounts = async () => {
   try {
     const [
-      admin,
       karyawan,
       divisi,
-      laporan,
+      jabatan,
       walikelas,
       absensi,
       laporanAbsensi
     ] = await Promise.all([
       axios.get('/karyawans/count'),
       axios.get('/divisis/count'),
-      axios.get('/laporans/count'),
+      axios.get('/jabatans/count'),
       axios.get('/walikelas/count'),
       axios.get('/absensis/count'),
-      axios.get('/laporan-absensi/count') // Sesuaikan sesuai backend
+      axios.get('/laporanabsensi/count')
     ])
+
     count.value = {
       karyawan: karyawan.data?.count || 0,
       divisi: divisi.data?.count || 0,
-      laporan: laporan.data?.count || 0,
+      jabatan: jabatan.data?.count || 0,
       walikelas: walikelas.data?.count || 0,
       absensi: absensi.data?.count || 0,
       laporanAbsensi: laporanAbsensi.data?.count || 0
@@ -113,19 +114,17 @@ const fetchCounts = async () => {
 onMounted(fetchCounts)
 
 const today = new Date().toISOString().split('T')[0]
-const calendarAttributes = ref([
-  {
-    key: 'today',
-    highlight: true,
-    dates: today,
-    customData: { isToday: true },
-    contentStyle: {
-      backgroundColor: '#66bfff',
-      color: 'white',
-      borderRadius: '50%'
-    }
+const calendarAttributes = ref([{
+  key: 'today',
+  highlight: true,
+  dates: today,
+  customData: { isToday: true },
+  contentStyle: {
+    backgroundColor: '#66bfff',
+    color: 'white',
+    borderRadius: '50%'
   }
-])
+}])
 </script>
 
 <style scoped>
@@ -134,9 +133,9 @@ const calendarAttributes = ref([
 }
 
 .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
   margin-top: 20px;
 }
 
@@ -184,7 +183,8 @@ const calendarAttributes = ref([
   background-color: #f1fbff;
   padding: 20px;
   border-radius: 10px;
-  max-width: 350px;
+  max-width: 400px;
+  margin-top: 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 

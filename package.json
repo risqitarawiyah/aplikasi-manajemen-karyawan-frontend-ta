@@ -11,11 +11,13 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.13.1",
     "core-js": "^3.8.3",
+    "file-saver": "^2.0.5",
     "html2pdf.js": "^0.10.3",
     "pinia": "^2.3.1",
     "v-calendar": "^3.1.2",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
