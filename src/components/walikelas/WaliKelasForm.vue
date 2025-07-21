@@ -15,9 +15,9 @@
             <div class="mb-3">
                 <label class="form-label">Nama Karyawan</label>
                 <select v-model="form.karyawanId" class="form-select" required>
-                <option disabled value="">-- Pilih Karyawan --</option>
-                <option v-for="k in karyawanList" :key="k.id" :value="k.id">
-                    {{ k.nama }}
+                <option disabled value="">-- Pilih Guru --</option>
+                <option v-for="g in guruList" :key="g.id" :value="g.karyawanId">
+                    {{ g.karyawan?.nama }}
                 </option>
                 </select>
             </div>
@@ -73,16 +73,16 @@ export default {
             kelas: '',
             jumlah_siswa: ''
         },
-        karyawanList: []
+        guruList: [] // ambil data dari tabel guru
         }
     },
     methods: {
-        async ambilKaryawan() {
+        async ambilGuru() {
         try {
-            const res = await axios.get('/karyawans')
-            this.karyawanList = res.data
+            const res = await axios.get('/guru')
+            this.guruList = res.data
         } catch (err) {
-            console.error('Gagal mengambil data karyawan:', err)
+            console.error('Gagal mengambil data guru:', err)
         }
         },
         async handleSubmit() {
@@ -110,7 +110,7 @@ export default {
         }
     },
     mounted() {
-        this.ambilKaryawan()
+        this.ambilGuru()
         this.isiFormEdit()
     }
 }

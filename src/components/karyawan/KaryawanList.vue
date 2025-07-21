@@ -23,6 +23,10 @@
       {{ notifPesan }}
     </div>
 
+    <div v-if="notifError" class="alert alert-danger" role="alert">
+      {{ notifError }}
+    </div>
+
     <div class="table-wrapper">
       <table class="table table-bordered table-striped">
         <thead class="tabel-header-soft">
@@ -96,7 +100,8 @@ export default {
       tampilkanForm: false,
       formMode: 'tambah',
       notifPesan: '',
-      dataEdit: null
+      dataEdit: null,
+      notifError: ''
     }
   },
   computed: {
@@ -143,6 +148,10 @@ export default {
         this.tampilkanNotifikasi('Karyawan berhasil dihapus!')
       } catch (err) {
         console.error('Gagal menghapus karyawan:', err)
+        this.notifError = err.response?.data?.message || 'Terjadi kesalahan saat menghapus karyawan.'
+        setTimeout(() => {
+          this.notifError = ''
+        }, 4000)
       } finally {
         this.showConfirm = false
       }

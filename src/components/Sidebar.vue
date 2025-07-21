@@ -42,6 +42,8 @@ export default {
         { label: 'Karyawan', path: '/karyawan', icon: 'bi bi-people' },
         { label: 'Divisi', path: '/divisi', icon: 'bi bi-diagram-3' },
         { label: 'Jabatan', path: '/jabatan', icon: 'bi bi-briefcase' },
+        { label: 'Guru', path: '/guru', icon: 'bi bi-person-badge' },        
+        { label: 'Mapel', path: '/mapel', icon: 'bi bi-book' },
         { label: 'Wali Kelas', path: '/walikelas', icon: 'bi bi-person-lines-fill' },
         { label: 'Absensi', path: '/absensi', icon: 'bi bi-calendar-check' },
         { label: 'Laporan Absensi', path: '/laporanabsensi', icon: 'bi bi-journal-text' }

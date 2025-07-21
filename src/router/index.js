@@ -6,6 +6,8 @@ import Karyawan from '../views/Karyawan.vue'
 import Divisi from '../views/Divisi.vue'
 import Jabatan from '../views/Jabatan.vue'
 import WaliKelas from '../views/WaliKelas.vue'
+import Guru from '../views/Guru.vue'
+import Mapel from '@/views/Mapel.vue'
 import Absensi from '../views/Absensi.vue'
 import LaporanAbsensi from '../views/LaporanAbsensi.vue'
 
@@ -26,6 +28,8 @@ const routes = [
   { path: '/karyawan', name: 'Karyawan', component: Karyawan, meta: { requiresAuth: true } },
   { path: '/divisi', name: 'Divisi', component: Divisi, meta: { requiresAuth: true } },
   { path: '/jabatan', name: 'Jabatan', component: Jabatan, meta: { requiresAuth: true } },
+  { path: '/guru', name: 'Guru', component: Guru, meta: { requiresAuth: true } },
+  { path: '/mapel', name: 'Mapel', component: Mapel, meta: { requiresAuth: true } },
   { path: '/walikelas', name: 'WaliKelas', component: WaliKelas, meta: { requiresAuth: true } },
   { path: '/absensi', name: 'Absensi', component: Absensi, meta: { requiresAuth: true } },
   { path: '/laporanabsensi', name: 'LaporanAbsensi', component: LaporanAbsensi, meta: { requiresAuth: true } }

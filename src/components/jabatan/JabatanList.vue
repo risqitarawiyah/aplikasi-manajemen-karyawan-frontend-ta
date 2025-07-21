@@ -22,7 +22,7 @@
         </div>
 
         <!-- Notifikasi -->
-        <div v-if="notifPesan" class="alert alert-success" role="alert">
+        <div v-if="notifPesan" :class="`alert ${notifTipe}`" role="alert">
         {{ notifPesan }}
         </div>
 
@@ -84,6 +84,7 @@ export default {
         jabatanDihapus: null,
         showConfirm: false,
         notifPesan: '',
+        notifTipe: 'alert-success',
         search: ''
         }
     },
@@ -122,33 +123,36 @@ export default {
         try {
             await axios.delete(`/jabatans/${this.jabatanDihapus.id}`)
             this.loadJabatans()
-            this.tampilkanNotifikasi('Jabatan berhasil dihapus!')
+            this.tampilkanNotifikasi('Jabatan berhasil dihapus!', 'alert-success')
         } catch (err) {
             console.error('Gagal menghapus jabatan:', err)
-            alert('Gagal menghapus jabatan.')
+            const pesan = err.response?.data?.message || 'Gagal menghapus jabatan.'
+            this.tampilkanNotifikasi(pesan, 'alert-danger')
         } finally {
             this.showConfirm = false
         }
         },
-        tampilkanNotifikasi(pesan) {
+        tampilkanNotifikasi(pesan, tipe = 'alert-success') {
         this.notifPesan = pesan
+        this.notifTipe = tipe
         setTimeout(() => {
             this.notifPesan = ''
-        }, 3000)
+        }, 4000)
         },
         async handleFormSaved() {
         const mode = this.modeForm
         this.tampilkanForm = false
         await this.loadJabatans()
         this.tampilkanNotifikasi(
-            mode === 'tambah' ? 'Jabatan berhasil ditambahkan!' : 'Jabatan berhasil diperbarui!'
+            mode === 'tambah' ? 'Jabatan berhasil ditambahkan!' : 'Jabatan berhasil diperbarui!',
+            'alert-success'
         )
         }
     },
     mounted() {
         this.loadJabatans()
     }
-    }
+}
 </script>
 
 <style scoped>
@@ -163,5 +167,8 @@ export default {
 }
 .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #f9f9f9;
+}
+.alert {
+    transition: all 0.3s ease;
 }
 </style>

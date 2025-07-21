@@ -14,6 +14,7 @@
         </div>
       </div>
 
+
       <div class="card blue" @click="$router.push('/divisi')">
         <div class="card-icon">🔗</div>
         <div class="card-data">
@@ -27,6 +28,24 @@
         <div class="card-data">
           <h2>{{ count.jabatan }}</h2>
           <p>Jabatan</p>
+        </div>
+      </div>
+
+      <!-- Kartu Guru -->
+      <div class="card green" @click="$router.push('/guru')">
+        <div class="card-icon">👩‍🏫</div>
+        <div class="card-data">
+          <h2>{{ count.guru }}</h2>
+          <p>Guru</p>
+        </div>
+      </div>
+
+      <!-- Kartu Mapel -->
+      <div class="card pink" @click="$router.push('/mapel')">
+        <div class="card-icon">📘</div>
+        <div class="card-data">
+          <h2>{{ count.mapel }}</h2>
+          <p>Mapel</p>
         </div>
       </div>
 
@@ -75,6 +94,8 @@ const count = ref({
   karyawan: 0,
   divisi: 0,
   jabatan: 0,
+  guru: 0,
+  mapel: 0,
   walikelas: 0,
   absensi: 0,
   laporanAbsensi: 0
@@ -86,6 +107,8 @@ const fetchCounts = async () => {
       karyawan,
       divisi,
       jabatan,
+      guru,
+      mapel,
       walikelas,
       absensi,
       laporanAbsensi
@@ -93,15 +116,19 @@ const fetchCounts = async () => {
       axios.get('/karyawans/count'),
       axios.get('/divisis/count'),
       axios.get('/jabatans/count'),
+      axios.get('/guru/count'),
+      axios.get('/mapel/count'),
       axios.get('/walikelas/count'),
       axios.get('/absensis/count'),
-      axios.get('/laporanabsensi/count')
+      axios.get('/laporanabsensi/count'),
     ])
 
     count.value = {
       karyawan: karyawan.data?.count || 0,
       divisi: divisi.data?.count || 0,
       jabatan: jabatan.data?.count || 0,
+      guru: guru.data?.count || 0,
+      mapel: mapel.data?.count || 0,
       walikelas: walikelas.data?.count || 0,
       absensi: absensi.data?.count || 0,
       laporanAbsensi: laporanAbsensi.data?.count || 0
