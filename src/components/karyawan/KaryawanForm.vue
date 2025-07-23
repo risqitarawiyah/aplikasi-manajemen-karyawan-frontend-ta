@@ -43,10 +43,11 @@
 
           <div class="mb-3">
             <label>Status Kepegawaian</label>
-            <select v-model="form.status_kepegawaian" class="form-control" required>
-              <option disabled value="">Pilih</option>
-              <option value="PNS">PNS</option>
-              <option value="NON_PNS">NON_PNS</option>
+            <select v-model="form.statusId" class="form-control" required>
+              <option disabled value="">Pilih Status</option>
+              <option v-for="status in statusList" :key="status.id" :value="status.id">
+                {{ status.nama }}
+              </option>
             </select>
           </div>
 
@@ -99,30 +100,33 @@ export default {
         email: '',
         no_hp: '',
         alamat: '',
-        status_kepegawaian: '',
+        statusId: '',
         divisiId: '',
         jabatanId: ''
       },
       divisiList: [],
+      statusList: [],
       jabatanList: []
     }
   },
   methods: {
     async fetchDropdowns() {
       try {
-        const [divisiRes, jabatanRes] = await Promise.all([
+        const [divisiRes, jabatanRes, statusRes] = await Promise.all([
           axios.get('/divisis'),
-          axios.get('/jabatans')
+          axios.get('/jabatans'),
+          axios.get('/statuskepegawaian')
         ])
         this.divisiList = divisiRes.data
         this.jabatanList = jabatanRes.data
+        this.statusList = statusRes.data
       } catch (err) {
         console.error('Gagal memuat divisi/jabatan:', err)
       }
     },
     async tambahKaryawan() {
       const f = this.form
-      if (!f.nama || !f.jenis_kelamin || !f.email || !f.no_hp || !f.alamat || !f.status_kepegawaian || !f.divisiId || !f.jabatanId) {
+      if (!f.nama || !f.jenis_kelamin || !f.email || !f.no_hp || !f.alamat || !f.statusId || !f.divisiId || !f.jabatanId) {
         alert('Semua field wajib diisi!')
         return
       }
@@ -138,7 +142,7 @@ export default {
     },
     async updateKaryawan() {
       const f = this.form
-      if (!f.nama || !f.email || !f.no_hp || !f.alamat || !f.status_kepegawaian || !f.divisiId || !f.jabatanId) {
+      if (!f.nama || !f.email || !f.no_hp || !f.alamat || !f.statusId || !f.divisiId || !f.jabatanId) {
         alert('Semua field wajib diisi!')
         return
       }
@@ -158,7 +162,7 @@ export default {
 
     if (this.mode === 'edit' && this.dataEdit) {
       const {
-        nama, email, no_hp, alamat, status_kepegawaian,
+        nama, email, no_hp, alamat, statusId,
         divisiId, jabatanId
       } = this.dataEdit
 
@@ -168,7 +172,7 @@ export default {
         email,
         no_hp,
         alamat,
-        status_kepegawaian,
+        statusId,
         divisiId,
         jabatanId
       }

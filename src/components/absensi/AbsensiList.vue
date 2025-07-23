@@ -27,7 +27,7 @@
             <table class="table table-bordered table-striped">
             <thead class="tabel-header-soft">
                 <tr>
-                <th>ID</th>
+                <th>No</th>
                 <th>Nama Karyawan</th>
                 <th>Tanggal</th>
                 <th>Status</th>
@@ -35,8 +35,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="absen in filteredList" :key="absen.id">
-                <td>{{ absen.id }}</td>
+                <tr v-for="(absen, index) in filteredList" :key="absen.id">
+                <td>{{ index + 1 }}</td>
                 <td>{{ absen.karyawan?.nama || '-' }}</td>
                 <td>{{ formatTanggal(absen.tanggal) }}</td>
                 <td>{{ absen.status }}</td>

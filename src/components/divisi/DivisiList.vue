@@ -29,15 +29,15 @@
     <table class="table table-bordered table-striped">
       <thead class="tabel-header-soft">
         <tr>
-          <th>ID</th>
+          <th>No</th>
           <th>Nama Divisi</th>
           <th>Jumlah Karyawan</th>
           <th>Aksi</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="divisi in filteredDivisi" :key="divisi.id">
-          <td>{{ divisi.id }}</td>
+        <tr v-for="(divisi, index) in filteredDivisi" :key="divisi.id">
+          <td>{{ index + 1 }}</td>
           <td>{{ divisi.nama }}</td>
           <td>{{ divisi.karyawan?.length || 0 }}</td>
           <td>

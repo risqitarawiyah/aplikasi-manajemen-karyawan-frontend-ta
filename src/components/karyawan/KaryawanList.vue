@@ -31,7 +31,7 @@
       <table class="table table-bordered table-striped">
         <thead class="tabel-header-soft">
           <tr>
-            <th>ID</th>
+            <th>No</th>
             <th>Nama</th>
             <th>Jenis Kelamin</th>
             <th>Email</th>
@@ -44,14 +44,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="karyawan in filteredKaryawan" :key="karyawan.id">
-            <td>{{ karyawan.id }}</td>
+          <tr v-for="(karyawan, index) in filteredKaryawan" :key="karyawan.id">
+            <td>{{ index + 1 }}</td>
             <td>{{ karyawan.nama }}</td>
             <td>{{ karyawan.jenis_kelamin }}</td>
             <td>{{ karyawan.email }}</td>
             <td>{{ karyawan.no_hp }}</td>
             <td>{{ karyawan.alamat }}</td>
-            <td>{{ karyawan.status_kepegawaian }}</td>
+            <td>{{ karyawan.status_kepegawaian?.nama || '-' }}</td>
             <td>{{ karyawan.divisi?.nama || '-' }}</td>
             <td>{{ karyawan.jabatan?.nama || '-' }}</td>
             <td>

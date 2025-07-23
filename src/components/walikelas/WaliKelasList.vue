@@ -18,27 +18,27 @@
         <table class="table table-bordered table-striped">
         <thead class="tabel-header-soft">
             <tr>
-            <th>ID</th>
-            <th>Nama Karyawan</th>
+            <th>No</th>
+            <th>Nama Guru</th>
             <th>Kelas</th>
             <th>Jumlah Siswa</th>
             <th>Aksi</th>
             </tr>
         </thead>
-        <tbody>
-            <tr v-for="wali in list" :key="wali.id">
-            <td>{{ wali.id }}</td>
-            <td>{{ wali.karyawan?.nama || '-' }}</td>
-            <td>{{ wali.kelas }}</td>
-            <td>{{ wali.jumlah_siswa }}</td>
+                <tbody>
+        <tr v-for="(wali, index) in list" :key="wali.id">
+            <td>{{ index + 1 }}</td>
+            <td>{{ wali.guru?.karyawan?.nama || '-' }}</td>
+            <td>{{ formatKelas(wali.kelas) }}</td>
+            <td>{{ wali.kelas?.jumlah_siswa || '-' }}</td>
             <td>
-                <button class="btn btn-sm btn-warning me-2" @click="edit(wali)">Edit</button>
-                <button class="btn btn-sm btn-danger" @click="konfirmasiHapus(wali)">Hapus</button>
+            <button class="btn btn-sm btn-warning me-2" @click="edit(wali)">Edit</button>
+            <button class="btn btn-sm btn-danger" @click="konfirmasiHapus(wali)">Hapus</button>
             </td>
-            </tr>
-            <tr v-if="!loading && list.length === 0">
+        </tr>
+        <tr v-if="!loading && list.length === 0">
             <td colspan="5" class="text-center text-muted">Belum ada data wali kelas</td>
-            </tr>
+        </tr>
         </tbody>
         </table>
 
@@ -81,6 +81,11 @@ export default {
         }
     },
     methods: {
+        formatKelas(kelas) {
+            if (!kelas) return '-'
+            return `${kelas.tingkat} ${kelas.jurusan} - ${kelas.ruang}`
+        },
+
         async fetchData() {
         this.loading = true
         try {

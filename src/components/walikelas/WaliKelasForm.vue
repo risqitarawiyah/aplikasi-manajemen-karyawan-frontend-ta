@@ -12,36 +12,43 @@
         <!-- Form -->
         <form @submit.prevent="handleSubmit">
             <div class="modal-body">
+            <!-- Guru -->
             <div class="mb-3">
-                <label class="form-label">Nama Karyawan</label>
-                <select v-model="form.karyawanId" class="form-select" required>
+                <label class="form-label">Guru</label>
+                <select v-model="form.guruId" class="form-select text-black" required>
                 <option disabled value="">-- Pilih Guru --</option>
-                <option v-for="g in guruList" :key="g.id" :value="g.karyawanId">
+                <option v-for="g in guruList" :key="g.id" :value="g.id">
                     {{ g.karyawan?.nama }}
                 </option>
                 </select>
             </div>
 
+            <!-- Kelas -->
             <div class="mb-3">
-                <label class="form-label">Kelas</label>
-                <input
-                type="text"
-                v-model="form.kelas"
-                class="form-control"
-                required
-                placeholder="Contoh: 7A, 9B"
-                />
+            <label class="form-label">Kelas</label>
+            <select v-model="form.kelasId" class="form-select text-black" required>
+                <option disabled value="">-- Pilih Kelas --</option>
+                <option
+                v-for="kelas in kelasList"
+                :key="kelas.id"
+                :value="kelas.id"
+                >
+                {{ kelas.tingkat }} {{ kelas.jurusan }} - {{ kelas.ruang }}
+                </option>
+            </select>
             </div>
 
+            <!-- Tahun Ajaran -->
             <div class="mb-3">
-                <label class="form-label">Jumlah Siswa</label>
+                <label class="form-label">Tahun Ajaran</label>
                 <input
-                type="number"
-                v-model.number="form.jumlah_siswa"
+                type="text"
+                v-model="form.tahun_ajaran"
                 class="form-control"
                 required
-                min="1"
-                placeholder="Contoh: 32"
+                placeholder="Contoh: 2024/2025"
+                pattern="^[0-9]{4}/[0-9]{4}$"
+                title="Format harus seperti 2024/2025"
                 />
             </div>
             </div>
@@ -69,11 +76,12 @@ export default {
     data() {
         return {
         form: {
-            karyawanId: '',
-            kelas: '',
-            jumlah_siswa: ''
+            guruId: '',
+            kelasId: '',
+            tahun_ajaran: ''
         },
-        guruList: [] // ambil data dari tabel guru
+        guruList: [],
+        kelasList: []
         }
     },
     methods: {
@@ -83,6 +91,14 @@ export default {
             this.guruList = res.data
         } catch (err) {
             console.error('Gagal mengambil data guru:', err)
+        }
+        },
+        async ambilKelas() {
+        try {
+            const res = await axios.get('/kelas')
+            this.kelasList = res.data
+        } catch (err) {
+            console.error('Gagal ambil data kelas:', err)
         }
         },
         async handleSubmit() {
@@ -102,15 +118,16 @@ export default {
         isiFormEdit() {
         if (this.mode === 'edit' && this.dataEdit) {
             this.form = {
-            karyawanId: this.dataEdit.karyawanId,
-            kelas: this.dataEdit.kelas,
-            jumlah_siswa: this.dataEdit.jumlah_siswa
+            guruId: this.dataEdit.guruId,
+            kelasId: this.dataEdit.kelasId,
+            tahun_ajaran: this.dataEdit.tahun_ajaran
             }
         }
         }
     },
     mounted() {
         this.ambilGuru()
+        this.ambilKelas()
         this.isiFormEdit()
     }
 }
@@ -126,14 +143,12 @@ export default {
     align-items: center;
     z-index: 999;
 }
-
 .modal-box {
     background: white;
     width: 500px;
     border-radius: 8px;
     overflow: hidden;
 }
-
 .modal-header {
     background-color: #dbeeff;
     padding: 12px 16px;
@@ -141,23 +156,27 @@ export default {
     justify-content: space-between;
     align-items: center;
 }
-
 .modal-body {
     padding: 16px;
 }
-
 .modal-footer {
     padding: 12px 16px;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
 }
-
 .close-btn {
     background: none;
     border: none;
     font-size: 1.5rem;
     color: #000;
     cursor: pointer;
+}
+/* Tambahan agar option dropdown selalu terbaca */
+select option {
+    color: #000;
+}
+.form-select {
+    color: #000 !important;
 }
 </style>

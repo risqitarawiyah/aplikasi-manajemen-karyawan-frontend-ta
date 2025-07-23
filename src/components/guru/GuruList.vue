@@ -27,7 +27,7 @@
         <table class="table table-bordered table-striped">
             <thead class="tabel-header-soft">
             <tr>
-                <th>ID</th>
+                <th>No</th>
                 <th>Nama</th>
                 <th>Mapel</th>
                 <th>Jumlah JTM</th>

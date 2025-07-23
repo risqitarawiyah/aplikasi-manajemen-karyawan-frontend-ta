@@ -43,12 +43,12 @@ export default {
           bulan: this.bulan,
           tahun: this.tahun
         });
-        alert('Laporan berhasil digenerate!');
+        this.$emit('notif', 'Laporan berhasil digenerate!');
         this.$emit('close');
         this.$emit('generated'); // untuk trigger reload data
       } catch (err) {
         console.error(err);
-        alert('Gagal membuat laporan otomatis.');
+        this.$emit('notif', 'Gagal membuat laporan otomatis.');
       }
     }
   }

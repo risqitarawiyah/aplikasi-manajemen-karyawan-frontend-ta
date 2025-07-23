@@ -44,7 +44,9 @@ export default {
         { label: 'Jabatan', path: '/jabatan', icon: 'bi bi-briefcase' },
         { label: 'Guru', path: '/guru', icon: 'bi bi-person-badge' },        
         { label: 'Mapel', path: '/mapel', icon: 'bi bi-book' },
-        { label: 'Wali Kelas', path: '/walikelas', icon: 'bi bi-person-lines-fill' },
+        { label: 'Wali Kelas', path: '/walikelas', icon: 'bi bi-person-badge-fill' },
+        { label: 'Kelas', path: '/kelas', icon: 'bi bi-building' },
+        { label: 'Status Kepegawaian', path: '/statuskepegawaian', icon: 'bi bi-card-checklist' },
         { label: 'Absensi', path: '/absensi', icon: 'bi bi-calendar-check' },
         { label: 'Laporan Absensi', path: '/laporanabsensi', icon: 'bi bi-journal-text' }
       ]

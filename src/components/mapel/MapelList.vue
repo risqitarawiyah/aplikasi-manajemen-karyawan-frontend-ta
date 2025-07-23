@@ -27,14 +27,14 @@
         <table class="table table-bordered table-striped">
             <thead class="tabel-header-soft">
             <tr>
-                <th>ID</th>
+                <th>No</th>
                 <th>Nama Mapel</th>
                 <th>Aksi</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="mapel in filteredMapel" :key="mapel.id">
-                <td>{{ mapel.id }}</td>
+            <tr v-for="(mapel, index) in filteredMapel" :key="mapel.id">
+                <td>{{ index + 1 }}</td>
                 <td>{{ mapel.nama }}</td>
                 <td>
                 <button class="btn btn-sm btn-warning me-2" @click="editMapel(mapel)">Edit</button>

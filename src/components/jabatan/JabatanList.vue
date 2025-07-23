@@ -29,14 +29,14 @@
         <table class="table table-bordered table-striped">
         <thead class="tabel-header-soft">
             <tr>
-            <th>ID</th>
+            <th>No</th>
             <th>Nama Jabatan</th>
             <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="jabatan in filteredJabatans" :key="jabatan.id">
-            <td>{{ jabatan.id }}</td>
+            <tr v-for="(jabatan, index) in filteredJabatans" :key="jabatan.id">
+            <td>{{ index + 1 }}</td>
             <td>{{ jabatan.nama }}</td>
             <td>
                 <button class="btn btn-sm btn-warning me-2" @click="editJabatan(jabatan)">Edit</button>
