@@ -288,14 +288,6 @@ export default {
   font-weight: 500;
 }
 
-/* ==============
-    KELAS NO-PRINT
-    Untuk menyembunyikan elemen saat cetak
-  ================ */
-  .no-print {
-    display: none !important;
-  }
-
   /* ==========================
     GAYA CETAK (PDF / PRINT)
 ========================== */
@@ -303,6 +295,14 @@ export default {
   /* SEMUA ELEMEN DISEMBUNYIKAN DULU */
   body * {
     visibility: hidden;
+  }
+
+  /* ==============
+    KELAS NO-PRINT
+    Untuk menyembunyikan elemen saat cetak
+  ================ */
+  .no-print {
+    display: none !important;
   }
 
   /* HANYA AREA PRINT YANG TAMPIL */

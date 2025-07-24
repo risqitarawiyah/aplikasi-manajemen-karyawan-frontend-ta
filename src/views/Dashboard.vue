@@ -43,6 +43,14 @@
     <details class="mt-4">
       <summary class="summary-link">📂 Detail Lainnya</summary>
       <div class="card-container mt-3">
+        <div class="card teal" @click="$router.push('/absensi')">
+          <div class="card-icon">📘</div>
+          <div class="card-data">
+            <h2>{{ count.absensi }}</h2>
+            <p>Absensi</p>
+          </div>
+        </div>
+
         <div class="card blue" @click="$router.push('/divisi')">
           <div class="card-icon">🏢</div>
           <div class="card-data">
@@ -98,6 +106,7 @@ export default {
         karyawan: 0,
         guru: 0,
         walikelas: 0,
+        absensi: 0,
         laporanAbsensi: 0,
         divisi: 0,
         jabatan: 0,
@@ -113,7 +122,7 @@ export default {
   methods: {
     async fetchCounts() {
       try {
-        const res = await axios.get('/dashboard/count');
+        const res = await axios.get('/dashboard');
         this.count = res.data;
       } catch (error) {
         console.error('Gagal mengambil data dashboard:', error);

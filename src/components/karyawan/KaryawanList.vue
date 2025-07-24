@@ -116,7 +116,9 @@ export default {
     async ambilData() {
       try {
         const res = await axios.get('/karyawans') // pastikan sudah include divisi dan jabatan di backend
-        this.karyawanList = res.data
+        this.karyawanList = res.data.sort((a, b) =>
+          a.nama.localeCompare(b.nama)
+        )
       } catch (err) {
         console.error('Gagal mengambil data karyawan:', err)
       }
